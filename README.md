@@ -22,14 +22,14 @@ cd project-for-testing
 
 Create a `.env` file in the root folder with the following variables:
 
-env
+.env.example
 PORT=3000
-DB_URI=mongodb://localhost:27017/your-db  
-JWT_SECRET=Secretkey223 
+DB_URI=your-mongodb-uri
+JWT_SECRET=your-jwt-secret
 
-env.test
+.env.test.example
 NODE_ENV=test
-JWT_SECRET=testSecret123
+JWT_SECRET=your-test-secret
 
 
 # Testing plan
