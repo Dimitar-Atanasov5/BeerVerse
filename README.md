@@ -1,4 +1,4 @@
-# Project for testing
+# BeerVerse
 This is an Express-based web app built for testing and demonstrating basic user authentication and route handling. This is an up to date project. At this point we have unit tests. Coming up integration tests and API tests with Postman. System testing will be conducted using JMeter, followed by end-to-end (E2E) testing with Selenium. The application will include user registration and login forms, allowing users to authenticate and manage sessions securely. Additionally, new sections will be added for managing beer entries — including creating, viewing, and possibly editing or deleting beer-related data. In the future, a front-end interface will be developed to interact with the API. This frontend will be tested using Playwright to ensure consistent behavior across browsers and complete end-to-end test coverage. 
 
 # Technologies
