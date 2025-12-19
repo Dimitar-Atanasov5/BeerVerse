@@ -12,7 +12,3 @@ export function mockResponse() {
     res.json = jest.fn();
     return res;
 };
-export const mockBcrypt = {
-    hash: jest.fn(async (password, saltRounds) => `hashed-${password}`),
-    compare: jest.fn(async (plain, hashed) => hashed === `hashed-${plain}`),
-};

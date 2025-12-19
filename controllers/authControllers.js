@@ -17,7 +17,10 @@ export async function registerUserController(req, res) {
 
 export async function loginUserController(req, res) {
     try {
-        const result = await loginUserService(req.body);
+        const result = await loginUserService(
+            req.body.username,
+            req.body.password
+        );
         res.status(result.status).json({
             message: result.message,
             token: result.token

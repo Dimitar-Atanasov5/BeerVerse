@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { users } from '../data/users.js';
+import User from '../models/user.js'
 import { HttpError } from '../helpers.js'
 
 export async function registerUserService(data) {
@@ -87,21 +87,37 @@ export async function registerUserService(data) {
             throw new HttpError(400, errors);
         }
 
-        const existingUser = users.find(user => user.username === usernameTrimmed);
+        const existingUser = await User.findOne({
+            $or: [
+                { username: usernameTrimmed },
+                { email: emailTrimmed }
+            ]
+        });
 
         if (existingUser) {
             throw new HttpError(409, "User already exists");
         }
 
         const hashedPassword = await bcrypt.hash(passwordTrimmed, 8);
-        const newUser = { username: usernameTrimmed, password: hashedPassword };
-        users.push(newUser);
+
+        const user = await User.create({
+            username: usernameTrimmed,
+            password: hashedPassword,
+            firstName: firstNameTrimmed,
+            lastName: lastNameTrimmed,
+            age: Number(ageTrimmed),
+            email: emailTrimmed
+        });
+
         return {
             status: 201,
             message: "Successful registration",
-            user: newUser
+            user: {
+                id: user._id.toString(),
+                username: user.username
+            }
         };
-        
+
     } catch (error) {
         if (error instanceof HttpError) {
             throw error;

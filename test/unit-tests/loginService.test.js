@@ -1,97 +1,72 @@
-import { beforeEach, jest } from '@jest/globals';
-import { loginUserService } from '../../services/loginUserService.js';
-import { registerUserService } from '../../services/registerUserService.js';
-import { users } from '../../data/users.js';
-import bcrypt from 'bcrypt';
-import { HttpError } from '../../helpers.js'
+import { beforeAll, beforeEach, jest } from '@jest/globals';
+import { mockUser, mockBcrypt } from './unitSetup.js';
+
+const mockJwT = {
+    sign: jest.fn().mockReturnValue("fake jwt token")
+};
+
+jest.unstable_mockModule("jsonwebtoken", () => ({
+    default: mockJwT
+}));
+
+const { loginUserService } = await import("../../services/loginUserService.js");
+
+beforeEach(() => {
+    jest.clearAllMocks();
+});
 
 describe("Login service tests", () => {
+    test("Should login user successfully with valid credentials", async () => {
+        const validUsername = "ValidInput1";
+        const validPassword = "ValidPass1";
 
-    beforeEach(() => {
-        users.length = 0;
-    });
+        mockUser.findOne.mockResolvedValueOnce({ _id: "1", username: validUsername, password: "hashed" });
+        mockBcrypt.compare.mockResolvedValueOnce(true);
+        mockJwT.sign.mockReturnValueOnce("mocked token");
 
-    it("Should login user successfully with valid credentials", async () => {
-
-        const newUser = {
-            username: "Dimitar1",
-            password: "Password1",
-            confirmPassword: "Password1",
-            firstName: "Dimitar",
-            lastName: "Dimov",
-            age: "27",
-            email: "dimov1@gmail.com"
-        };
-
-        await expect(registerUserService(newUser)).resolves.toMatchObject({
-            status: 201,
-            message: "Successful registration"
+        await expect(loginUserService(validUsername, validPassword)).resolves.toMatchObject({
+            status: 200,
+            message: "Login successful",
+            token: "mocked token"
         });
-        expect(users).toHaveLength(1);
-        expect(users[0].password).not.toBe("Password1");
-        const isMatch = await bcrypt.compare("Password1", users[0].password);
-        expect(isMatch).toBe(true);
-
-        const username = "Dimitar1";
-        const password = "Password1";
-
-        await expect(loginUserService(username, password)).resolves.toEqual(
-            expect.objectContaining({
-                status: 200,
-                message: "Login successful",
-                token: expect.any(String)
-            })
-        );
     });
-    it("Should return 404 with non existing user", async () => {
+    test("Should return 404 with non existing user", async () => {
         const invalidUserName = "Miro123";
         const invalidPassword = "Parola123";
+
+        mockUser.findOne.mockResolvedValueOnce(null);
 
         await expect(loginUserService(invalidUserName, invalidPassword)).rejects.toMatchObject({
             status: 404,
             message: "Invalid user"
         });
     });
-    it("Should return 404 with valid username and wrong password", async () => {
-        const newUser = {
-            username: "Dimitar1",
-            password: "TestPass1",
-            confirmPassword: "TestPass1",
-            firstName: "Dimitar",
-            lastName: "Atanasov",
-            age: "35",
-            email: "dimodimo1@abv.bg"
-        };
-        await expect(registerUserService(newUser)).resolves.toMatchObject({
-            status: 201,
-            message: "Successful registration"
-        });
-        expect(users).toHaveLength(1);
-        expect(users[0].password).not.toBe("Password1");
-        const isMatch = await bcrypt.compare("Password1", users[0].password);
+    test("Should return 404 with valid username and wrong password", async () => {
+        const validUsername = "Validuser1";
+        const invalidPassword = "InvalidPass";
 
-        const username = "Dimitar1";
-        const password = "Password234"
+        mockUser.findOne.mockResolvedValueOnce({ _id: "1", username: validUsername, password: "hashed" });
+        mockBcrypt.compare.mockResolvedValueOnce(false);
 
-        await expect(loginUserService(username, password)).rejects.toMatchObject({
+        await expect(loginUserService(validUsername, invalidPassword)).rejects.toMatchObject({
             status: 404,
             message: "Invalid password"
         });
     });
-    it("Should throw 400 for missing username input", async () => {
-        const emptyusername = ""
-        const somepass = "Pass1"
+    test("Should throw 400 for missing username input", async () => {
+        const emptyUsername = ""
+        const somePass = "Pass1"
 
-        await expect(loginUserService(emptyusername, somepass)).rejects.toMatchObject({
+        await expect(loginUserService(emptyUsername, somePass)).rejects.toMatchObject({
             status: 400,
             message: "Username and password are required"
         });
     });
-    it("Should throw 400 for missing password input", async () => {
+    test("Should throw 400 for missing password input", async () => {
         const username = "Someuser1"
-        const emptypass = ""
+        const emptyPass = ""
 
-        await expect(loginUserService(username, emptypass)).rejects.toMatchObject({
+        await expect(loginUserService(username, emptyPass)).rejects.toMatchObject({
             status: 400,
             message: "Username and password are required"
         });

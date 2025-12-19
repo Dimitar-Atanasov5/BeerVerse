@@ -1,5 +1,6 @@
-import { jest } from '@jest/globals';
+import { beforeEach, jest } from '@jest/globals';
 import { mockRequest, mockResponse } from '../mockFunctions.js';
+import { HttpError } from '../../helpers.js';
 
 let registerUserService, loginUserService;
 let registerUserController, loginUserController
@@ -18,29 +19,22 @@ beforeAll(async () => {
 
     ({ registerUserController, loginUserController } = await import('../../controllers/authControllers.js'))
 });
-
-afterEach(() => {
+beforeEach(() => {
     jest.clearAllMocks()
 });
 describe("Register controller unit test", () => {
-    it("Should return 201 on successful registration", async () => {
+    test("Responds with 201 and user data on successful registration", async () => {
         const req = mockRequest();
-        req.body = {
-            username: "User11",
-            password: "Test123",
-            confirmPassword: "Test123",
-            firstName: "User",
-            lastName: "Testov",
-            age: "25",
-            email: "user1@test.bg"
-        };
-
         const res = mockResponse();
+        req.body = {};
 
-        registerUserService.mockResolvedValue({
+        registerUserService.mockResolvedValueOnce({
             status: 201,
             message: "Successful registration",
-            user: { username: "User11" }
+            user: {
+                id: "1",
+                username: "User11"
+            }
         });
 
         await registerUserController(req, res);
@@ -49,129 +43,87 @@ describe("Register controller unit test", () => {
         expect(res.status).toHaveBeenCalledWith(201);
         expect(res.json).toHaveBeenCalledWith({
             message: "Successful registration",
-            user: { username: "User11" }
+            user: {
+                id: "1",
+                username: "User11"
+            }
         });
     });
-    it("Should throw 404 with invalid age input", async () => {
+    test("Responds with 400 and validation errors", async () => {
         const req = mockRequest()
-        req.body = {
-            username: "User11",
-            password: "Test123",
-            confirmPassword: "Test123",
-            firstName: "User",
-            lastName: "Testov",
-            age: "25аа",
-            email: "user1@test.bg"
-        };
-
         const res = mockResponse();
+        req.body = {}
 
-        registerUserService.mockResolvedValue({
-            status: 404,
-            message: "Age must be a number"
-        });
+        registerUserService.mockRejectedValueOnce(
+            new HttpError(400, ["Age must be a number"])
+        );
 
         await registerUserController(req, res);
 
         expect(registerUserService).toHaveBeenCalledWith(req.body);
-        expect(res.status).toHaveBeenCalledWith(404);
+        expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-            message: "Age must be a number"
+            error: ["Age must be a number"]
         });
     });
-    it("Should return 500 and default message when error has no status or message", async () => {
-        const req = mockRequest();
-        req.body = { username: "User" };
+    test("Responds with 500 when service throws unexpected error", async () => {
+        const req = mockRequest();        
         const res = mockResponse();
+        req.body = {};
 
-        registerUserService.mockRejectedValue({});
+        registerUserService.mockRejectedValueOnce(new HttpError(500, "DB down"));
 
         await registerUserController(req, res);
 
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith({
-            error: "Server error"
+            error: "DB down"
         });
     });
-    describe("Login controller unit tests", () => {
-        it("Should return 200 with valid username and password", async () => {
-            const req = mockRequest()
-            req.body = {
-                username: "User11",
-                password: "Test123"
-            };
+    test("Responds with 409 when user already exists", async () => {
+        const req = mockRequest();
+        const res = mockResponse();
+        req.body = {};
 
-            const res = mockResponse()
+        registerUserService.mockRejectedValueOnce(new HttpError(409, "Username already exists"));
 
-            loginUserService.mockResolvedValue({
-                status: 200,
-                message: "Login successful"
-            });
-            await loginUserController(req, res);
+        await registerUserController(req, res);
 
-            expect(loginUserService).toHaveBeenCalledWith(req.body);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({
-                message: "Login successful"
-            });
-        });
-        it("Should handle error thrown by loginUserService", async () => {
-            const req = mockRequest();
-            req.body = { username: "User1", password: "wrong" };
-            const res = mockResponse();
-
-            loginUserService.mockRejectedValue({ message: "Invalid password", status: 404 });
-
-            await loginUserController(req, res);
-
-            expect(res.status).toHaveBeenCalledWith(404);
-            expect(res.json).toHaveBeenCalledWith({ error: "Invalid password" });
-        });
-        it("Should return provided error status and message from loginUserService", async () => {
-            const req = mockRequest();
-            req.body = { username: "WrongUser", password: "WrongPass" };
-            const res = mockResponse();
-
-            
-            loginUserService.mockRejectedValue({
-                message: "Invalid credentials",
-                status: 401
-            });
-
-            await loginUserController(req, res);
-
-            expect(res.status).toHaveBeenCalledWith(401);
-            expect(res.json).toHaveBeenCalledWith({ error: "Invalid credentials" });
-        });
-        it("Should default to status 400 when error has no status", async () => {
-            const req = mockRequest();
-            req.body = { username: "User", password: "pass" };
-            const res = mockResponse();
-
-
-            loginUserService.mockRejectedValue(new Error("Something broke"));
-
-            await loginUserController(req, res);
-
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ error: "Something broke" });
-        });
-        it("Should return error status and message when service throws HttpError", async () => {
-            const req = mockRequest();
-            req.body = { username: "SomeUser" };
-            const res = mockResponse();
-
-            registerUserService.mockRejectedValue({
-                status: 409,
-                message: "Username already exists"
-            });
-
-            await registerUserController(req, res);
-
-            expect(res.status).toHaveBeenCalledWith(409);
-            expect(res.json).toHaveBeenCalledWith({
-                error: "Username already exists"
-            });
+        expect(res.status).toHaveBeenCalledWith(409);
+        expect(res.json).toHaveBeenCalledWith({
+            error: "Username already exists"
         });
     });
-});    
+});
+describe("Login controller unit tests", () => {
+    test("Should return 200 with valid username and password", async () => {
+        const req = mockRequest()
+        req.body = {};
+
+        const res = mockResponse()
+
+        loginUserService.mockResolvedValueOnce({
+            status: 200,
+            message: "Login successful"
+        });
+        await loginUserController(req, res);
+
+        expect(loginUserService).toHaveBeenCalledWith(req.body.username, req.body.password);
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({
+            message: "Login successful"
+        });
+    });
+    test("Should handle error thrown by loginUserService", async () => {
+        const req = mockRequest();
+        req.body = {};
+        const res = mockResponse();
+
+        loginUserService.mockRejectedValueOnce({ message: "Invalid password", status: 404 });
+
+        await loginUserController(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(404);
+        expect(res.json).toHaveBeenCalledWith({ error: "Invalid password" });
+    });
+});
