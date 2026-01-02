@@ -24,16 +24,15 @@ export function authRequired(req, res, next) {
     } catch (err) {
         return next(new HttpError(401, "Invalid or expired token"));
     }
-} 
+}
 
-    export function adminOnly(req, res, next) {
-        if(!req.user) {
-            return next(new HttpError(401, "Authentication required"));
-        }
-
-        if (req.user.role !== "admin") {
-            return next(new HttpError(403, "Admin access required"));
-        }
-
-        next();
+export function adminOnly(req, res, next) {
+    if (!req.user) {
+        return next(new HttpError(401, "Authentication required"));
     }
+
+    if (req.user.role !== "admin") {
+        return next(new HttpError(403, "Admin access required"));
+    }
+    next();
+}

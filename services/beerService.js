@@ -2,7 +2,8 @@ import { HttpError } from "../helpers.js";
 import Beer from '../models/beer.js';
 
 export async function createBeer(data) {
-    const { name,
+    const {
+        name,
         style,
         country,
         abv,
