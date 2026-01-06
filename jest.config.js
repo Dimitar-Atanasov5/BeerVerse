@@ -11,7 +11,7 @@ export default {
       displayName: "integration",
       testMatch: ["<rootDir>/test/integration-tests/**/*.test.js"],
       testEnvironment: "node",
-      setupFilesAfterEnv: ["<rootDir>/test/setupTests.js"],
+      setupFilesAfterEnv: ["<rootDir>/test/integrationSetup.js"],
     },
   ]
 };

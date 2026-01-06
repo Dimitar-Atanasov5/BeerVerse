@@ -14,7 +14,7 @@ jest.unstable_mockModule("../../models/user.js", () => ({
 }));
 
 //MOCK BCRYPT
-export const mockBcrypt = { 
+export const mockBcrypt = {
   hash: jest.fn().mockResolvedValue("hashed-password"),
   compare: jest.fn().mockResolvedValue(true),
 };
@@ -32,11 +32,12 @@ export const mockBeer = {
   findByIdAndDelete: jest.fn()
 };
 
-jest.unstable_mockModule("../../models/beer.js", () =>({
+jest.unstable_mockModule("../../models/beer.js", () => ({
   default: mockBeer,
 }));
 
 //IMPORT SERVICE AFTER MOCKS
 export const { registerUserService } = await import("../../services/registerUserService.js");
 export const beerServiceModule = await import("../../services/beerService.js");
+
 

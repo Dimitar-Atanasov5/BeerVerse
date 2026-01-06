@@ -1,31 +1,39 @@
 import { registerUserService } from '../services/registerUserService.js';
 import { loginUserService } from '../services/loginUserService.js';
+import { HttpError } from '../helpers.js';
 
 export async function registerUserController(req, res) {
     try {
         const result = await registerUserService(req.body);
-        res.status(result.status).json({
+        return res.status(result.status).json({
             message: result.message,
             user: result.user,
         });
-
-    } catch (error) {
-        console.error("REGISTER ERROR", error);
-        res.status(error.status || 500).json({ error: error.errors || error.message || "Server error" });
+    } catch (err) {
+        if (err instanceof HttpError) {
+            return res.status(err.status).json({
+                error: err.errors ?? err.message,
+            });
+        }
+        console.error(err);
+        return res.status(500).json({ error: "Server error" });
     };
 };
 
 export async function loginUserController(req, res) {
     try {
-        const result = await loginUserService(
-            req.body.username,
-            req.body.password
-        );
-        res.status(result.status).json({
+        const { username, password } = req.body || {};
+        const result = await loginUserService(username, password);
+
+        return res.status(result.status).json({
             message: result.message,
-            token: result.token
+            token: result.token,
         });
     } catch (err) {
-        res.status(err.status || 400).json({ error: err.message });
+        if (err instanceof HttpError) {
+            return res.status(err.status).json({ error: err.message });
+        }
+        console.error(err);
+        return res.status(500).json({ error: "Server error" });
     };
 };

@@ -6,7 +6,7 @@ import { connectDB } from '../DB/config/connectDB.js';
 
 let mongo;
 
-console.log('Running tests with in-memory MongoDB (no real DB used)');
+console.log('Running integration tests with in-memory MongoDB (no real DB used)');
 
 beforeAll(async () => {
   mongo = await MongoMemoryServer.create();
@@ -26,4 +26,3 @@ afterAll(async () => {
   await mongo.stop();
 });
 
-console.log("JWT_SECRET (loaded via setupTests):", process.env.JWT_SECRET)

@@ -26,33 +26,50 @@ describe("Register controller unit test", () => {
     test("Responds with 201 and user data on successful registration", async () => {
         const req = mockRequest();
         const res = mockResponse();
-        req.body = {};
+        req.body = {
+            username: "DimitarDimov",
+            password: "Pass1Pass1",
+            confirmPassword: "Pass1Pass1",
+            firstName: "Ivan",
+            lastName: "Ivanov",
+            age: "25",
+            email: "dimov1@gmail.com"
+        };
 
         registerUserService.mockResolvedValueOnce({
             status: 201,
             message: "Successful registration",
             user: {
                 id: "1",
-                username: "User11"
+                username: "DimitarDimov"
             }
         });
 
         await registerUserController(req, res);
 
+        expect(registerUserService).toHaveBeenCalledTimes(1);
         expect(registerUserService).toHaveBeenCalledWith(req.body);
         expect(res.status).toHaveBeenCalledWith(201);
         expect(res.json).toHaveBeenCalledWith({
             message: "Successful registration",
             user: {
                 id: "1",
-                username: "User11"
+                username: "DimitarDimov"
             }
         });
     });
     test("Responds with 400 and validation errors", async () => {
         const req = mockRequest()
         const res = mockResponse();
-        req.body = {}
+        req.body = {
+            username: "DimitarDimov",
+            password: "Pass1Pass1",
+            confirmPassword: "Pass1Pass1",
+            firstName: "Ivan",
+            lastName: "Ivanov",
+            age: "25aaa",
+            email: "dimov1@gmail.com"
+        };
 
         registerUserService.mockRejectedValueOnce(
             new HttpError(400, ["Age must be a number"])
@@ -60,35 +77,38 @@ describe("Register controller unit test", () => {
 
         await registerUserController(req, res);
 
+        expect(registerUserService).toHaveBeenCalledTimes(1);
         expect(registerUserService).toHaveBeenCalledWith(req.body);
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
             error: ["Age must be a number"]
         });
     });
-    test("Responds with 500 when service throws unexpected error", async () => {
-        const req = mockRequest();        
+    test("Responds with 500 when service throws Error", async () => {
+        const req = mockRequest();
         const res = mockResponse();
         req.body = {};
 
-        registerUserService.mockRejectedValueOnce(new HttpError(500, "DB down"));
+        registerUserService.mockRejectedValueOnce(new Error("DB down"));
 
         await registerUserController(req, res);
 
+        expect(registerUserService).toHaveBeenCalledTimes(1);
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith({
-            error: "DB down"
+            error: "Server error"
         });
     });
     test("Responds with 409 when user already exists", async () => {
         const req = mockRequest();
         const res = mockResponse();
-        req.body = {};
+        req.body = { username: "ExistingUser", password: "Password1" };
 
         registerUserService.mockRejectedValueOnce(new HttpError(409, "Username already exists"));
 
         await registerUserController(req, res);
 
+        expect(registerUserService).toHaveBeenCalledTimes(1);
         expect(res.status).toHaveBeenCalledWith(409);
         expect(res.json).toHaveBeenCalledWith({
             error: "Username already exists"
@@ -96,11 +116,11 @@ describe("Register controller unit test", () => {
     });
 });
 describe("Login controller unit tests", () => {
-    test("Should return 200 with valid username and password", async () => {
-        const req = mockRequest()
-        req.body = {};
+    test("Responds with 200 with valid username and password", async () => {
+        const req = mockRequest();
+        const res = mockResponse();
 
-        const res = mockResponse()
+        req.body = { username: "Dimitar1", password: "Pass123" };
 
         loginUserService.mockResolvedValueOnce({
             status: 200,
@@ -108,22 +128,38 @@ describe("Login controller unit tests", () => {
         });
         await loginUserController(req, res);
 
+        expect(loginUserService).toHaveBeenCalledTimes(1);
         expect(loginUserService).toHaveBeenCalledWith(req.body.username, req.body.password);
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             message: "Login successful"
         });
     });
-    test("Should handle error thrown by loginUserService", async () => {
+    test("Should handle error thrown by loginUserService for invalid password", async () => {
         const req = mockRequest();
-        req.body = {};
         const res = mockResponse();
+        req.body = { username: "User123", password: "wrongPass" };
 
-        loginUserService.mockRejectedValueOnce({ message: "Invalid password", status: 404 });
+        loginUserService.mockRejectedValueOnce(new HttpError(404, "Invalid password"));
 
         await loginUserController(req, res);
 
+        expect(loginUserService).toHaveBeenCalledTimes(1);
         expect(res.status).toHaveBeenCalledWith(404);
         expect(res.json).toHaveBeenCalledWith({ error: "Invalid password" });
+    });
+    test("Responds with 500 when loginUserService throws Error", async () => {
+        const req = mockRequest();
+        const res = mockResponse();
+
+        req.body = { username: "Dimo123", password: "Pass123" };
+
+        loginUserService.mockRejectedValueOnce(new Error("DB down"));
+
+        await loginUserController(req, res);
+
+        expect(loginUserService).toHaveBeenCalledTimes(1);
+        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.json).toHaveBeenCalledWith({ error: "Server error" });
     });
 });

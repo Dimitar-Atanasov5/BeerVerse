@@ -7,9 +7,9 @@ export async function createBeer(data) {
         style,
         country,
         abv,
+        ibu,
         description,
         image,
-        ibu,
         isCraft
     } = data || {};
 
@@ -37,7 +37,7 @@ export async function createBeer(data) {
     }
 
     if (ibu < 0 || ibu > 100) {
-        throw new HttpError(400, "IBU must be betwenn 0 and 100");
+        throw new HttpError(400, "IBU must be between 0 and 100");
     }
 
     const beer = await Beer.create({
