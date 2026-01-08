@@ -123,5 +123,5 @@ export async function registerUserService(data) {
             throw error;
         };
         throw new HttpError(500, "Server error");
-    };
-};
+    }
+}

@@ -17,8 +17,8 @@ export async function registerUserController(req, res) {
         }
         console.error(err);
         return res.status(500).json({ error: "Server error" });
-    };
-};
+    }
+}
 
 export async function loginUserController(req, res) {
     try {
@@ -35,5 +35,5 @@ export async function loginUserController(req, res) {
         }
         console.error(err);
         return res.status(500).json({ error: "Server error" });
-    };
-};
+    }
+}

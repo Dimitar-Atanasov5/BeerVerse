@@ -12,21 +12,21 @@ export async function loginUserService(username, password) {
     const user = await User.findOne({ username: username?.trim() });
     if (!user) {
         throw new HttpError(404, "Invalid user");
-    };
+    }
 
     const isPasswordMatch = await bcrypt.compare(password.trim(), user.password);
     if (!isPasswordMatch) {
         throw new HttpError(404, "Invalid password");
-    };
+    }
     const token = jwt.sign(
         { id: user._id.toString(), username: user.username, role: user.role },
         process.env.JWT_SECRET,
         { expiresIn: '1h' }
-    );
+    )
 
     return {
         status: 200,
         message: "Login successful",
         token
     };
-};
+}
