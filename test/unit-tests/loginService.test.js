@@ -1,8 +1,9 @@
 import { beforeAll, beforeEach, jest } from '@jest/globals';
 import { mockUser, mockBcrypt } from './unitSetup.js';
 
+
 const mockJwT = {
-    sign: jest.fn().mockReturnValue("fake jwt token")
+    sign: jest.fn().mockReturnValue(null)
 };
 
 jest.unstable_mockModule("jsonwebtoken", () => ({

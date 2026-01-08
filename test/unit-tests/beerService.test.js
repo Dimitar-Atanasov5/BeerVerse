@@ -1,5 +1,6 @@
 import { beforeEach, describe, jest, test } from '@jest/globals';
 import { mockBeer, beerServiceModule } from './unitSetup.js';
+import { HttpError } from '../../helpers.js';
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -11,7 +12,8 @@ describe("Beer service unit tests", () => {
             style: "Lager",
             country: "Bulgaria",
             abv: 5,
-            ibu: 45
+            ibu: 45,
+            createdBy: "Dimo1"
         };
 
         const docBeer = {
@@ -71,7 +73,8 @@ describe("Beer service unit tests", () => {
             name: "Test beer",
             style: "Pilsner",
             country: "Bulgaria",
-            ibu: 10
+            ibu: 10,
+            createdBy: "Dimo11"
         };
 
         test.each([-1, 21])("Rejects invalid ABV boundary", async (abvInput) => {
@@ -101,7 +104,8 @@ describe("Beer service unit tests", () => {
             name: "Test beer",
             style: "Pilsner",
             country: "Bulgaria",
-            abv: 5
+            abv: 5,
+            createdBy: "Dimo11"
         };
         test.each([-1, 101])("Rejects invalid IBU boundary", async (ibuInput) => {
             const data = { ...baseData, ibu: ibuInput };

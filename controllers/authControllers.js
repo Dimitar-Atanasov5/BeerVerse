@@ -22,7 +22,7 @@ export async function registerUserController(req, res) {
 
 export async function loginUserController(req, res) {
     try {
-        const { username, password } = req.body || {};
+        const { username, password } = req.body;
         const result = await loginUserService(username, password);
 
         return res.status(result.status).json({

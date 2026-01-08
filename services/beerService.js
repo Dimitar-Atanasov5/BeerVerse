@@ -10,8 +10,9 @@ export async function createBeer(data) {
         ibu,
         description,
         image,
-        isCraft
-    } = data || {};
+        isCraft,
+        createdBy
+    } = data;
 
     const missing = [];
     if (!name) missing.push("name");
@@ -40,6 +41,10 @@ export async function createBeer(data) {
         throw new HttpError(400, "IBU must be between 0 and 100");
     }
 
+    if (!createdBy) {
+        throw new HttpError(401, "Unauthorized");
+    }
+
     const beer = await Beer.create({
         name,
         style,
@@ -49,6 +54,7 @@ export async function createBeer(data) {
         image,
         ibu,
         isCraft: Boolean(isCraft),
+        createdBy
     });
 
     return beer.toObject();
@@ -83,22 +89,39 @@ export async function getBeerById(id) {
 }
 
 export async function updateBeer(id, data) {
+    if (!beer) {
+        throw new HttpError(404, "Beer not found");
+    }
+
+    const isAdmin = user?.role === "admin";
+    const isOwner = user?.id && String(beer.createdBy) === String(user.id);
+
+    if (!isAdmin && !isOwner) {
+        throw new HttpError(403, "You can update only your own beers");
+    }
+    
     const beer = await Beer.findByIdAndUpdate(id, data, {
         new: true,
         runValidators: true,
     });
 
-    if (!beer) {
-        throw new HttpError(404, "Beer not found");
-    }
     return beer.toObject();
 }
 
-export async function deleteBeer(id) {
+export async function deleteBeer(id, user) {
     const beer = await Beer.findByIdAndDelete(id);
 
     if (!beer) {
         throw new HttpError(404, "Beer not found");
+    }
+
+    if (user?.role === "admin") {
+        await Beer.findByIdAndDelete(id);
+        return { message: "Beer deleted successfully" }
+    }
+
+    if (!user?.id || String(beer.createdBy) !== String(user.id)) {
+        throw new HttpError(403, "You can delete only your own beers");
     }
     return { message: "Beer deleted successfully" };
 }
