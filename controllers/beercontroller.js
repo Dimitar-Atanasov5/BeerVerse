@@ -24,7 +24,6 @@ export async function getAllBeersController(req, res) {
       country: req.query.country,
     };
 
-    // query params идват като string, затова:
     if (req.query.isCraft !== undefined) {
       filters.isCraft = req.query.isCraft === "true";
     }
