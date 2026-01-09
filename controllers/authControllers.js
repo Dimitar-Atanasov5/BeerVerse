@@ -15,7 +15,9 @@ export async function registerUserController(req, res) {
                 error: err.errors ?? err.message,
             });
         }
-        console.error(err);
+        if (process.env.NODE_ENV !== "test") {
+            console.error(err);
+        }
         return res.status(500).json({ error: "Server error" });
     }
 }
@@ -33,7 +35,9 @@ export async function loginUserController(req, res) {
         if (err instanceof HttpError) {
             return res.status(err.status).json({ error: err.message });
         }
-        console.error(err);
+        if (process.env.NODE_ENV !== "test") {
+            console.error(err);
+        }
         return res.status(500).json({ error: "Server error" });
     }
 }
