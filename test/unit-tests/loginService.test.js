@@ -17,7 +17,7 @@ beforeEach(() => {
 });
 
 describe("Login service tests", () => {
-    test("Should login user successfully with valid credentials", async () => {
+    test("[KAN-34] User login with valid data", async () => {
         const validUsername = "ValidInput1";
         const validPassword = "ValidPass1";
 
@@ -31,18 +31,18 @@ describe("Login service tests", () => {
             token: "mocked token"
         });
     });
-    test("Should return 404 with non existing user", async () => {
+    test("[KAN-35] Login fails with invalid credentials", async () => {
         const invalidUserName = "Miro123";
         const invalidPassword = "Parola123";
 
         mockUser.findOne.mockResolvedValueOnce(null);
 
         await expect(loginUserService(invalidUserName, invalidPassword)).rejects.toMatchObject({
-            status: 404,
-            message: "Invalid user"
+            status: 401,
+            message: "Invalid username or password"
         });
     });
-    test("Should return 404 with valid username and wrong password", async () => {
+    test("[KAN-36] Login fails with valid username and invalid password", async () => {
         const validUsername = "Validuser1";
         const invalidPassword = "InvalidPass";
 
@@ -50,11 +50,11 @@ describe("Login service tests", () => {
         mockBcrypt.compare.mockResolvedValueOnce(false);
 
         await expect(loginUserService(validUsername, invalidPassword)).rejects.toMatchObject({
-            status: 404,
-            message: "Invalid password"
+            status: 401,
+            message: "Invalid username or password"
         });
     });
-    test("Should throw 400 for missing username input", async () => {
+    test("[KAN-37] Login fails with missing username input", async () => {
         const emptyUsername = ""
         const somePass = "Pass1"
 
@@ -63,7 +63,7 @@ describe("Login service tests", () => {
             message: "Username and password are required"
         });
     });
-    test("Should throw 400 for missing password input", async () => {
+    test("[KAN-38] Login fails with missing password input", async () => {
         const username = "Someuser1"
         const emptyPass = ""
 

@@ -6,6 +6,28 @@ beforeEach(() => {
     jest.clearAllMocks();
 });
 describe("RegisterUser service tests", () => {
+    test("[KAN-21] User registration with valid data", async () => {
+        const body = {
+            username: "DimitarDimov",
+            password: "Pass1Pass1",
+            confirmPassword: "Pass1Pass1",
+            firstName: "Ivan",
+            lastName: "Ivanov",
+            age: "25",
+            email: "ivan1@gmail.com"
+        };
+
+        mockUser.create.mockResolvedValueOnce({ _id: "1", username: body.username });
+
+        await expect(registerUserService(body)).resolves.toMatchObject({
+            status: 201,
+            message: "Successful registration",
+            user: {
+                id: "1",
+                username: body.username
+            }
+        });
+    });
     // Desicion table metric.
     test.each([
         [
@@ -48,7 +70,7 @@ describe("RegisterUser service tests", () => {
                 "E-mail is required"
             ]
         ]
-    ])("Should throw an error 400 with missing fields", async (body, expectedErrors) => {
+    ])("[KAN-22] Registration fails when required fields are missing", async (body, expectedErrors) => {
         await expect(registerUserService(body)).rejects.toMatchObject({
             status: 400,
             errors: expect.arrayContaining(expectedErrors)
@@ -72,7 +94,7 @@ describe("RegisterUser service tests", () => {
             ["Fields must not contain spaces (except first and last name)"]
         ]
 
-    ])("Should throw an error 400 when internal space is present", async (body, expectedErrors) => {
+    ])("[KAN-23] Registration fails when registration inputs contain internal spaces", async (body, expectedErrors) => {
         await expect(registerUserService(body)).rejects.toMatchObject({
             status: 400,
             errors: expect.arrayContaining(expectedErrors)
@@ -84,7 +106,7 @@ describe("RegisterUser service tests", () => {
         { ageInput: "18", expectedErrors: null },
         { ageInput: "99", expectedErrors: null },
         { ageInput: "100", expectedErrors: ["Age must be between 18 and 99"] },
-    ])("Should validate ageInput correctly", async ({ ageInput, expectedErrors }) => {
+    ])("[KAN-24] Registration age boundary validation", async ({ ageInput, expectedErrors }) => {
         const body = {
             username: "Dimitar77",
             password: "Parola789",
@@ -121,7 +143,7 @@ describe("RegisterUser service tests", () => {
                 "Invalid e-mail"
             ],
         ]
-    ])("Should throw an error 400 for invalid input formats", async (body, expectedErrors) => {
+    ])("[KAN-25] Registration fails for invalid input formats", async (body, expectedErrors) => {
         await expect(registerUserService(body)).rejects.toMatchObject({
             status: 400,
             errors: expect.arrayContaining(expectedErrors)
@@ -132,7 +154,7 @@ describe("RegisterUser service tests", () => {
         { passInput: "Pass12", expectedErrors: null },
         { passInput: "Pass12345678", expectedErrors: null },
         { passInput: "Pass123456789", expectedErrors: ["Password must be between 6 and 12 characters"] }
-    ])("Should validate passInput correctly", async ({ passInput, expectedErrors }) => {
+    ])("[KAN-26] Registration password boundary validation", async ({ passInput, expectedErrors }) => {
         const body = {
             username: "DimitarA1",
             password: passInput,
@@ -161,47 +183,7 @@ describe("RegisterUser service tests", () => {
             });
         };
     });
-    test("Should return 201 with 12 symbols username", async () => {
-        const body = {
-            username: "DimitarDimov",
-            password: "Pass1Pass1",
-            confirmPassword: "Pass1Pass1",
-            firstName: "Ivan",
-            lastName: "Ivanov",
-            age: "25",
-            email: "ivan1@gmail.com"
-        };
-
-        mockUser.create.mockResolvedValueOnce({ _id: "1", username: body.username });
-
-        await expect(registerUserService(body)).resolves.toMatchObject({
-            status: 201,
-            message: "Successful registration",
-            user: {
-                id: "1",
-                username: body.username
-            }
-        });
-    });
-    test("Should return 409 when username already exists", async () => {
-        const body = {
-            username: "Dimo111",
-            password: "Parola123",
-            confirmPassword: "Parola123",
-            firstName: "Dimo",
-            lastName: "Petrov",
-            age: "47",
-            email: "dimovdimo@abv.bg"
-        };
-
-        mockUser.findOne.mockResolvedValueOnce({ _id: "1", username: body.username })
-
-        await expect(registerUserService(body)).rejects.toMatchObject({
-            status: 409,
-            message: "User already exists"
-        });
-    });
-    test("Should return 409 with existing email registration", async () => {
+    test("[KAN-27] Registration fails when email already exists", async () => {
         const body = {
             username: "DimitarDimov",
             password: "Pass1Pass1",
@@ -219,7 +201,7 @@ describe("RegisterUser service tests", () => {
             message: "User already exists"
         });
     });
-    test("Should return 500 Server error when bcryp hash failed", async () => {
+    test("[KAN-28] Registration returns an error response on server failure", async () => {
         const body = {
             username: "Dimitar22",
             password: "Pass1234",

@@ -23,7 +23,7 @@ beforeEach(() => {
     jest.clearAllMocks()
 });
 describe("Register controller unit test", () => {
-    test("Responds with 201 and user data on successful registration", async () => {
+    test("[KAN-39] Register endpoint responds with 201 on valid request", async () => {
         const req = mockRequest();
         const res = mockResponse();
         req.body = {
@@ -58,7 +58,7 @@ describe("Register controller unit test", () => {
             }
         });
     });
-    test("Responds with 400 and validation errors", async () => {
+    test("[KAN-40] Register controller returns 400 for invalid age input", async () => {
         const req = mockRequest()
         const res = mockResponse();
         req.body = {
@@ -84,7 +84,7 @@ describe("Register controller unit test", () => {
             error: ["Age must be a number"]
         });
     });
-    test("Responds with 500 when service throws Error", async () => {
+    test("[KAN-41] Registration controller returns an error response on server failure", async () => {
         const req = mockRequest();
         const res = mockResponse();
         req.body = {};
@@ -99,7 +99,7 @@ describe("Register controller unit test", () => {
             error: "Server error"
         });
     });
-    test("Responds with 409 when user already exists", async () => {
+    test("[KAN-42] Registration controller returns an error 409 for existing user", async () => {
         const req = mockRequest();
         const res = mockResponse();
         req.body = { username: "ExistingUser", password: "Password1" };
@@ -116,7 +116,7 @@ describe("Register controller unit test", () => {
     });
 });
 describe("Login controller unit tests", () => {
-    test("Responds with 200 with valid username and password", async () => {
+    test("[KAN-43] Login controller returns 200 for valid credentials", async () => {
         const req = mockRequest();
         const res = mockResponse();
 
@@ -135,20 +135,20 @@ describe("Login controller unit tests", () => {
             message: "Login successful"
         });
     });
-    test("Should handle error thrown by loginUserService for invalid password", async () => {
+    test("[KAN-44] Login controller returns 401 for invalid password", async () => {
         const req = mockRequest();
         const res = mockResponse();
         req.body = { username: "User123", password: "wrongPass" };
 
-        loginUserService.mockRejectedValueOnce(new HttpError(404, "Invalid password"));
+        loginUserService.mockRejectedValueOnce(new HttpError(401, "Invalid password"));
 
         await loginUserController(req, res);
 
         expect(loginUserService).toHaveBeenCalledTimes(1);
-        expect(res.status).toHaveBeenCalledWith(404);
+        expect(res.status).toHaveBeenCalledWith(401);
         expect(res.json).toHaveBeenCalledWith({ error: "Invalid password" });
     });
-    test("Responds with 500 when loginUserService throws Error", async () => {
+    test("[KAN-45] Login controller returns 500 on unexpected server error", async () => {
         const req = mockRequest();
         const res = mockResponse();
 
