@@ -12,10 +12,6 @@
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "coverage:open": "npm test -- --coverage && start coverage/lcov-report/index.html"
   },
-  "jest-junit": {
-    "outputDirectory": "./reports/junit",
-    "outputName": "junit.xml"
-  },
   "keywords": [],
   "author": "Dimitar Atanasov",
   "license": "ISC",
