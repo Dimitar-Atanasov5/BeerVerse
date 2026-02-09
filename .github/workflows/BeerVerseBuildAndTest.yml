@@ -17,8 +17,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
+        
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
@@ -28,3 +27,21 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run test:unit
+    - run: npm ci
+    - run: npm run test:unit
+
+    - name: Import JUnit report to Xray Cloud
+      if: always()
+      env:
+        XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
+        XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
+      run: |
+        TOKEN=$(curl -s \
+          -H "Content-Type: application/json" \
+          -X POST "https://xray.cloud.getxray.app/api/v2/authenticate" \
+          -d "{\"client_id\":\"$XRAY_CLIENT_ID\",\"client_secret\":\"$XRAY_CLIENT_SECRET\"}" | tr -d '"')
+
+        curl -sS -H "Authorization: Bearer $TOKEN" \
+          -H "Content-Type: text/xml" \
+          --data-binary @reports/junit/junit.xml \
+          "https://xray.cloud.getxray.app/api/v2/import/execution/junit"
