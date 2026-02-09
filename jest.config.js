@@ -1,5 +1,9 @@
 export default {
   coverageReporters: ["text", "lcov", "html"],
+  reporters: [
+    "default",
+    ["jest-junit", { outputDirectory: "./reports/junit", outputName: "junit.xlm" }],
+  ],
   projects: [
     {
       displayName: "unit",
