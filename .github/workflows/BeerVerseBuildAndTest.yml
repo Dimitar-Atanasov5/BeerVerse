@@ -27,9 +27,7 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run test:unit
-    - run: npm ci
-    - run: npm run test:unit
-
+    
     - name: Import JUnit report to Xray Cloud
       if: always()
       env:
