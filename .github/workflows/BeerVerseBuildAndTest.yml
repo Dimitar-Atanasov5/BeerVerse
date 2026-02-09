@@ -5,41 +5,57 @@ name: BeerVerse CI pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [18.x]
-        
-    steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run test:unit
-    
-    - name: Import JUnit report to Xray Cloud
-      if: always()
-      env:
-        XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
-        XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
-      run: |
-        TOKEN=$(curl -s \
-          -H "Content-Type: application/json" \
-          -X POST "https://xray.cloud.getxray.app/api/v2/authenticate" \
-          -d "{\"client_id\":\"$XRAY_CLIENT_ID\",\"client_secret\":\"$XRAY_CLIENT_SECRET\"}" | tr -d '"')
 
-        curl -sS -H "Authorization: Bearer $TOKEN" \
-          -H "Content-Type: text/xml" \
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci
+      - run: npm run test:unit
+
+      - name: Import JUnit report to Xray Cloud
+        if: always()
+        env:
+         XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
+         XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
+        run: |
+         if [ ! -f reports/junit/junit.xml ]; then
+         echo "JUnit report not found, skipping Xray import"
+         exit 1
+         fi
+
+         echo "Authenticating to Xray Cloud..."
+         TOKEN=""
+         for i in 1 2 3 4 5; do
+         TOKEN=$(curl -sS --fail \
+         -H "Content-Type: application/json" \
+         -X POST "https://xray.cloud.getxray.app/api/v2/authenticate" \
+         -d "{\"client_id\":\"$XRAY_CLIENT_ID\",\"client_secret\":\"$XRAY_CLIENT_SECRET\"}" | tr -d '"') && break || true
+          echo "Auth attempt $i failed (possible 503). Retrying in $((i*3))s..."
+         sleep $((i*3))
+         done
+
+         if [ -z "$TOKEN" ]; then
+         echo "Failed to authenticate to Xray after retries."
+         exit 1
+          fi
+
+         echo "Importing JUnit..."
+         curl -sS --fail -H "Authorization: Bearer $TOKEN" \
+         -H "Content-Type: text/xml" \
           --data-binary @reports/junit/junit.xml \
-          "https://xray.cloud.getxray.app/api/v2/import/execution/junit"
+         "https://xray.cloud.getxray.app/api/v2/import/execution/junit"
