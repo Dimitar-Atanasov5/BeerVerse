@@ -60,8 +60,8 @@ jobs:
           fi
 
           echo "Importing JUnit..."
-          curl -sS --fail \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "Content-Type: text/xml" \
-            --data-binary @reports/junit/junit.xml \
-            "https://xray.cloud.getxray.app/api/v2/import/execution/junit"
+             curl -sS -D - \
+             -H "Authorization: Bearer $TOKEN" \
+             -H "Content-Type: text/xml" \
+             --data-binary @reports/junit/junit.xml \
+              "https://xray.cloud.getxray.app/api/v2/import/execution/junit"
