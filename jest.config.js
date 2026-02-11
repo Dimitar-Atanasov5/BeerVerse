@@ -1,7 +1,17 @@
 export default {
   reporters: [
     "default",
-    ["jest-junit", {outputDirectory: "./reports/junit", ouputName: "junit.xml"}],
+    [
+      "jest-junit",
+      {
+        outputDirectory: "./reports/junit",
+        outputName: "junit.xml",
+        titleTemplate: "{title}",
+        classNameTemplate: "{filepath}",
+        suiteNameTemplate: "{filepath}",
+        ancestorSeparator: " › "
+      }
+    ],
   ],
   coverageReporters: ["text", "lcov", "html"],
   projects: [
