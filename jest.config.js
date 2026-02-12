@@ -6,10 +6,6 @@ export default {
       {
         outputDirectory: "./reports/junit",
         outputName: "junit.xml",
-        titleTemplate: "{title}",
-        classNameTemplate: "{filepath}",
-        suiteNameTemplate: "{filepath}",
-        ancestorSeparator: " › "
       }
     ],
   ],

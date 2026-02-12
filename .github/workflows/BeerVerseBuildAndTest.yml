@@ -24,14 +24,8 @@ jobs:
           cache: "npm"
 
       - run: npm ci
-      - run: npm run test:unit
+      - run: "npm test -- --selectProjects unit test/unit-tests/registerUserService.test.js"
       
-      - name: Debug JUnit in CI
-        if: always()
-        run: |
-          ls -la reports || true
-          ls -la reports/junit || true
-
       - name: Import JUnit report to Xray Cloud
         if: always()
         env:

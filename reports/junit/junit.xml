@@ -1,107 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="48" failures="0" errors="0" time="0.706">
-  <testsuite name="test\unit-tests\authControllers.test.js" errors="0" failures="0" skipped="0" timestamp="2026-02-11T15:27:07" time="0.262" tests="7">
-    <testcase classname="test\unit-tests\authControllers.test.js" name="[KAN-39] Register endpoint responds with 201 on valid request" time="0.003">
+<testsuites name="jest tests" tests="48" failures="0" errors="0" time="0.717">
+  <testsuite name="Register controller unit test" errors="0" failures="0" skipped="0" timestamp="2026-02-12T09:20:04" time="0.284" tests="7">
+    <testcase classname="Register controller unit test [KAN-39] Register endpoint responds with 201 on valid request" name="Register controller unit test [KAN-39] Register endpoint responds with 201 on valid request" time="0.003">
     </testcase>
-    <testcase classname="test\unit-tests\authControllers.test.js" name="[KAN-40] Register controller returns 400 for invalid age input" time="0.001">
+    <testcase classname="Register controller unit test [KAN-40] Register controller returns 400 for invalid age input" name="Register controller unit test [KAN-40] Register controller returns 400 for invalid age input" time="0.001">
     </testcase>
-    <testcase classname="test\unit-tests\authControllers.test.js" name="[KAN-41] Registration controller returns an error response on server failure" time="0.001">
+    <testcase classname="Register controller unit test [KAN-41] Registration controller returns an error response on server failure" name="Register controller unit test [KAN-41] Registration controller returns an error response on server failure" time="0">
     </testcase>
-    <testcase classname="test\unit-tests\authControllers.test.js" name="[KAN-42] Registration controller returns an error 409 for existing user" time="0.001">
+    <testcase classname="Register controller unit test [KAN-42] Registration controller returns an error 409 for existing user" name="Register controller unit test [KAN-42] Registration controller returns an error 409 for existing user" time="0">
     </testcase>
-    <testcase classname="test\unit-tests\authControllers.test.js" name="[KAN-43] Login controller returns 200 for valid credentials" time="0.001">
+    <testcase classname="Login controller unit tests [KAN-43] Login controller returns 200 for valid credentials" name="Login controller unit tests [KAN-43] Login controller returns 200 for valid credentials" time="0">
     </testcase>
-    <testcase classname="test\unit-tests\authControllers.test.js" name="[KAN-44] Login controller returns 401 for invalid password" time="0.001">
+    <testcase classname="Login controller unit tests [KAN-44] Login controller returns 401 for invalid password" name="Login controller unit tests [KAN-44] Login controller returns 401 for invalid password" time="0.001">
     </testcase>
-    <testcase classname="test\unit-tests\authControllers.test.js" name="[KAN-45] Login controller returns 500 on unexpected server error" time="0">
-    </testcase>
-  </testsuite>
-  <testsuite name="test\unit-tests\registerUserService.test.js" errors="0" failures="0" skipped="0" timestamp="2026-02-11T15:27:07" time="0.115" tests="24">
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-21] User registration with valid data" time="0.002">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-22] Registration fails when required fields are missing" time="0.001">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-22] Registration fails when required fields are missing" time="0">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-22] Registration fails when required fields are missing" time="0">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-22] Registration fails when required fields are missing" time="0.001">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-22] Registration fails when required fields are missing" time="0.001">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-22] Registration fails when required fields are missing" time="0.001">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-22] Registration fails when required fields are missing" time="0">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-22] Registration fails when required fields are missing" time="0">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-23] Registration fails when registration inputs contain internal spaces" time="0.001">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-23] Registration fails when registration inputs contain internal spaces" time="0.001">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-23] Registration fails when registration inputs contain internal spaces" time="0">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-23] Registration fails when registration inputs contain internal spaces" time="0.001">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-24] Registration age boundary validation" time="0">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-24] Registration age boundary validation" time="0">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-24] Registration age boundary validation" time="0">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-24] Registration age boundary validation" time="0">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-25] Registration fails for invalid input formats" time="0.001">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-26] Registration password boundary validation" time="0">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-26] Registration password boundary validation" time="0">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-26] Registration password boundary validation" time="0">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-26] Registration password boundary validation" time="0.001">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-27] Registration fails when email already exists" time="0">
-    </testcase>
-    <testcase classname="test\unit-tests\registerUserService.test.js" name="[KAN-28] Registration returns an error response on server failure" time="0">
+    <testcase classname="Login controller unit tests [KAN-45] Login controller returns 500 on unexpected server error" name="Login controller unit tests [KAN-45] Login controller returns 500 on unexpected server error" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="test\unit-tests\loginService.test.js" errors="0" failures="0" skipped="0" timestamp="2026-02-11T15:27:07" time="0.093" tests="5">
-    <testcase classname="test\unit-tests\loginService.test.js" name="[KAN-34] User login with valid data" time="0.002">
+  <testsuite name="Login service tests" errors="0" failures="0" skipped="0" timestamp="2026-02-12T09:20:04" time="0.103" tests="5">
+    <testcase classname="Login service tests [KAN-34] User login with valid data" name="Login service tests [KAN-34] User login with valid data" time="0.002">
     </testcase>
-    <testcase classname="test\unit-tests\loginService.test.js" name="[KAN-35] Login fails with invalid credentials" time="0">
+    <testcase classname="Login service tests [KAN-35] Login fails with invalid credentials" name="Login service tests [KAN-35] Login fails with invalid credentials" time="0">
     </testcase>
-    <testcase classname="test\unit-tests\loginService.test.js" name="[KAN-36] Login fails with valid username and invalid password" time="0">
+    <testcase classname="Login service tests [KAN-36] Login fails with valid username and invalid password" name="Login service tests [KAN-36] Login fails with valid username and invalid password" time="0">
     </testcase>
-    <testcase classname="test\unit-tests\loginService.test.js" name="[KAN-37] Login fails with missing username input" time="0.001">
+    <testcase classname="Login service tests [KAN-37] Login fails with missing username input" name="Login service tests [KAN-37] Login fails with missing username input" time="0.001">
     </testcase>
-    <testcase classname="test\unit-tests\loginService.test.js" name="[KAN-38] Login fails with missing password input" time="0">
+    <testcase classname="Login service tests [KAN-38] Login fails with missing password input" name="Login service tests [KAN-38] Login fails with missing password input" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="test\unit-tests\beerService.test.js" errors="0" failures="0" skipped="0" timestamp="2026-02-11T15:27:07" time="0.115" tests="12">
-    <testcase classname="test\unit-tests\beerService.test.js" name="Should create beer successfully" time="0.002">
+  <testsuite name="RegisterUser service tests" errors="0" failures="0" skipped="0" timestamp="2026-02-12T09:20:04" time="0.108" tests="24">
+    <testcase classname="RegisterUser service tests [KAN-21] User registration with valid data" name="RegisterUser service tests [KAN-21] User registration with valid data" time="0.002">
     </testcase>
-    <testcase classname="test\unit-tests\beerService.test.js" name="throws validation error with all missing required fields" time="0">
+    <testcase classname="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" name="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" time="0.001">
     </testcase>
-    <testcase classname="test\unit-tests\beerService.test.js" name="Throws an error when ibu is not a number" time="0">
+    <testcase classname="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" name="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" time="0">
     </testcase>
-    <testcase classname="test\unit-tests\beerService.test.js" name="Throws an error when ibu is not a number" time="0">
+    <testcase classname="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" name="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" time="0">
     </testcase>
-    <testcase classname="test\unit-tests\beerService.test.js" name="Rejects invalid ABV boundary" time="0.001">
+    <testcase classname="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" name="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" time="0.001">
     </testcase>
-    <testcase classname="test\unit-tests\beerService.test.js" name="Rejects invalid ABV boundary" time="0">
+    <testcase classname="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" name="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" time="0">
     </testcase>
-    <testcase classname="test\unit-tests\beerService.test.js" name="Accepts valid ABV boundary" time="0.001">
+    <testcase classname="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" name="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" time="0.001">
     </testcase>
-    <testcase classname="test\unit-tests\beerService.test.js" name="Accepts valid ABV boundary" time="0.001">
+    <testcase classname="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" name="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" time="0">
     </testcase>
-    <testcase classname="test\unit-tests\beerService.test.js" name="Rejects invalid IBU boundary" time="0.001">
+    <testcase classname="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" name="RegisterUser service tests [KAN-22] Registration fails when required fields are missing" time="0.001">
     </testcase>
-    <testcase classname="test\unit-tests\beerService.test.js" name="Rejects invalid IBU boundary" time="0.001">
+    <testcase classname="RegisterUser service tests [KAN-23] Registration fails when registration inputs contain internal spaces" name="RegisterUser service tests [KAN-23] Registration fails when registration inputs contain internal spaces" time="0.001">
     </testcase>
-    <testcase classname="test\unit-tests\beerService.test.js" name="Accepts valid IBU boundary" time="0">
+    <testcase classname="RegisterUser service tests [KAN-23] Registration fails when registration inputs contain internal spaces" name="RegisterUser service tests [KAN-23] Registration fails when registration inputs contain internal spaces" time="0">
     </testcase>
-    <testcase classname="test\unit-tests\beerService.test.js" name="Accepts valid IBU boundary" time="0">
+    <testcase classname="RegisterUser service tests [KAN-23] Registration fails when registration inputs contain internal spaces" name="RegisterUser service tests [KAN-23] Registration fails when registration inputs contain internal spaces" time="0">
+    </testcase>
+    <testcase classname="RegisterUser service tests [KAN-23] Registration fails when registration inputs contain internal spaces" name="RegisterUser service tests [KAN-23] Registration fails when registration inputs contain internal spaces" time="0">
+    </testcase>
+    <testcase classname="RegisterUser service tests [KAN-24] Registration age boundary validation" name="RegisterUser service tests [KAN-24] Registration age boundary validation" time="0">
+    </testcase>
+    <testcase classname="RegisterUser service tests [KAN-24] Registration age boundary validation" name="RegisterUser service tests [KAN-24] Registration age boundary validation" time="0.001">
+    </testcase>
+    <testcase classname="RegisterUser service tests [KAN-24] Registration age boundary validation" name="RegisterUser service tests [KAN-24] Registration age boundary validation" time="0">
+    </testcase>
+    <testcase classname="RegisterUser service tests [KAN-24] Registration age boundary validation" name="RegisterUser service tests [KAN-24] Registration age boundary validation" time="0.001">
+    </testcase>
+    <testcase classname="RegisterUser service tests [KAN-25] Registration fails for invalid input formats" name="RegisterUser service tests [KAN-25] Registration fails for invalid input formats" time="0">
+    </testcase>
+    <testcase classname="RegisterUser service tests [KAN-26] Registration password boundary validation" name="RegisterUser service tests [KAN-26] Registration password boundary validation" time="0">
+    </testcase>
+    <testcase classname="RegisterUser service tests [KAN-26] Registration password boundary validation" name="RegisterUser service tests [KAN-26] Registration password boundary validation" time="0">
+    </testcase>
+    <testcase classname="RegisterUser service tests [KAN-26] Registration password boundary validation" name="RegisterUser service tests [KAN-26] Registration password boundary validation" time="0">
+    </testcase>
+    <testcase classname="RegisterUser service tests [KAN-26] Registration password boundary validation" name="RegisterUser service tests [KAN-26] Registration password boundary validation" time="0">
+    </testcase>
+    <testcase classname="RegisterUser service tests [KAN-27] Registration fails when email already exists" name="RegisterUser service tests [KAN-27] Registration fails when email already exists" time="0.001">
+    </testcase>
+    <testcase classname="RegisterUser service tests [KAN-28] Registration returns an error response on server failure" name="RegisterUser service tests [KAN-28] Registration returns an error response on server failure" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Beer service unit tests" errors="0" failures="0" skipped="0" timestamp="2026-02-12T09:20:04" time="0.11" tests="12">
+    <testcase classname="Beer service unit tests Should create beer successfully" name="Beer service unit tests Should create beer successfully" time="0.003">
+    </testcase>
+    <testcase classname="Beer service unit tests Missing required fields validation throws validation error with all missing required fields" name="Beer service unit tests Missing required fields validation throws validation error with all missing required fields" time="0">
+    </testcase>
+    <testcase classname="Beer service unit tests Numeric validation for ABV and IBU Throws an error when ibu is not a number" name="Beer service unit tests Numeric validation for ABV and IBU Throws an error when ibu is not a number" time="0.001">
+    </testcase>
+    <testcase classname="Beer service unit tests Numeric validation for ABV and IBU Throws an error when ibu is not a number" name="Beer service unit tests Numeric validation for ABV and IBU Throws an error when ibu is not a number" time="0">
+    </testcase>
+    <testcase classname="Beer service unit tests Boundary value analysis for ABV properties Rejects invalid ABV boundary" name="Beer service unit tests Boundary value analysis for ABV properties Rejects invalid ABV boundary" time="0.001">
+    </testcase>
+    <testcase classname="Beer service unit tests Boundary value analysis for ABV properties Rejects invalid ABV boundary" name="Beer service unit tests Boundary value analysis for ABV properties Rejects invalid ABV boundary" time="0.001">
+    </testcase>
+    <testcase classname="Beer service unit tests Boundary value analysis for ABV properties Accepts valid ABV boundary" name="Beer service unit tests Boundary value analysis for ABV properties Accepts valid ABV boundary" time="0">
+    </testcase>
+    <testcase classname="Beer service unit tests Boundary value analysis for ABV properties Accepts valid ABV boundary" name="Beer service unit tests Boundary value analysis for ABV properties Accepts valid ABV boundary" time="0.001">
+    </testcase>
+    <testcase classname="Beer service unit tests Boundary value analysis for IBU properties Rejects invalid IBU boundary" name="Beer service unit tests Boundary value analysis for IBU properties Rejects invalid IBU boundary" time="0.001">
+    </testcase>
+    <testcase classname="Beer service unit tests Boundary value analysis for IBU properties Rejects invalid IBU boundary" name="Beer service unit tests Boundary value analysis for IBU properties Rejects invalid IBU boundary" time="0">
+    </testcase>
+    <testcase classname="Beer service unit tests Boundary value analysis for IBU properties Accepts valid IBU boundary" name="Beer service unit tests Boundary value analysis for IBU properties Accepts valid IBU boundary" time="0.001">
+    </testcase>
+    <testcase classname="Beer service unit tests Boundary value analysis for IBU properties Accepts valid IBU boundary" name="Beer service unit tests Boundary value analysis for IBU properties Accepts valid IBU boundary" time="0">
     </testcase>
   </testsuite>
 </testsuites>
