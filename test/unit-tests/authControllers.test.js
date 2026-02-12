@@ -23,7 +23,7 @@ beforeEach(() => {
     jest.clearAllMocks()
 });
 describe("Register controller unit test", () => {
-    test("[KAN-39] Register endpoint responds with 201 on valid request", async () => {
+    test("[KAN-132] Register endpoint responds with 201 on valid request", async () => {
         const req = mockRequest();
         const res = mockResponse();
         req.body = {
@@ -58,7 +58,7 @@ describe("Register controller unit test", () => {
             }
         });
     });
-    test("[KAN-40] Register controller returns 400 for invalid age input", async () => {
+    test("[KAN-133] Register controller returns 400 for invalid age input", async () => {
         const req = mockRequest()
         const res = mockResponse();
         req.body = {
