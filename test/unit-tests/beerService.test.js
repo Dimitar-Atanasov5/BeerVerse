@@ -85,7 +85,7 @@ describe("Beer service unit tests", () => {
                 message: "ABV must be between 0 and 20%"
             });
         });
-        test.each([0, 20])("Accepts valid ABV boundary", async (abvInput) => {
+        test.each([0, 1, 19, 20])("Accepts valid ABV boundary", async (abvInput) => {
             const data = { ...baseData, abv: abvInput };
 
             const docBeer = {
