@@ -84,7 +84,7 @@ describe("Register controller unit test", () => {
             error: ["Age must be a number"]
         });
     });
-    test("[KAN-41] Registration controller returns an error response on server failure", async () => {
+    test("[KAN-134] Registration controller returns an error response on server failure", async () => {
         const req = mockRequest();
         const res = mockResponse();
         req.body = {};
