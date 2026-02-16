@@ -41,6 +41,8 @@ describe("Login service tests", () => {
             status: 401,
             message: "Invalid username or password"
         });
+
+        expect(mockBcrypt.compare).not.toHaveBeenCalled();
     });
     test("[KAN-36] Login fails with valid username and invalid password", async () => {
         const validUsername = "Validuser1";
@@ -53,6 +55,8 @@ describe("Login service tests", () => {
             status: 401,
             message: "Invalid username or password"
         });
+
+        expect(mockBcrypt.compare).toHaveBeenCalledTimes(1);
     });
     test("[KAN-37] Login fails with missing username input", async () => {
         const emptyUsername = ""
