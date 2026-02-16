@@ -75,5 +75,7 @@ describe("Login service tests", () => {
             status: 400,
             message: "Username and password are required"
         });
+
+        expect(mockBcrypt.compare).not.toHaveBeenCalled();
     });
 });
